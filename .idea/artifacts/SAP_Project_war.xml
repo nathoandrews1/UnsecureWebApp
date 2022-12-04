@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="SAP_Project:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>SAP_Project</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="SAP_Project-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="SAP_Project:war exploded" />
+    </root>
+  </artifact>
+</component>
