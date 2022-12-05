@@ -40,10 +40,34 @@
 </div>
 
 <script>
-    function returnSearch(){
+    function returnSearch() {
         var firstName = document.getElementById("username").value;
         var lastName = document.getElementById("password").value;
-        document.getElementById("searchP").innerHTML = "Searching for user with Name: "+firstName + " " + lastName;
+
+        //Sanitize Input
+        if(sanitize(firstName) || sanitize(lastName))
+        {
+            alert("Illegal characters used, $,&,#,<,>,|,/");
+            return;
+        }
+        else
+        {
+            document.getElementById("searchP").innerHTML = "Searching for user with Name: "+firstName + " " + lastName;
+        }
+    }
+
+    function sanitize(input)
+    {
+        const illegalChars = ['$','&','#','<','>','|','/'];
+        var illegal = false;
+        for(let i = 0; i < input.toString().length - 1; i++)
+        {
+            if(illegalChars.includes(input.toString().charAt(i)))
+            {
+                illegal = true;
+            }
+        }
+        return illegal;
     }
 </script>
 </body>

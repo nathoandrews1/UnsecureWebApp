@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
@@ -24,6 +25,22 @@ public class LoginServlet extends HttpServlet {
 
         String user = request.getParameter("username");
         String password = request.getParameter("password");
+
+
+        //Running the sanitizer on input.
+        if(Sanitizer.checkString(user) == false && Sanitizer.checkString(password) == false)
+        {
+            try {
+                ResponseHandler.addParagraph("Error Illegal Input used <,>,%,&,/,|,$ are not allowed");
+                RequestDispatcher dis = request.getRequestDispatcher("loginPage.jsp");
+                dis.include(request, response);
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
         String searchQuery = "SELECT * FROM login WHERE username='"+user+"' AND password='"+password+"'";
 
         ResultSet rs = DatabaseConnection.queryDatabase(searchQuery);

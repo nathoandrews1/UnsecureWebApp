@@ -9,10 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 @WebServlet(name="sqlInjectionServlet", value="/sqlInjectionServlet")
 public class SQLInjectionServlet extends HttpServlet {
@@ -35,7 +32,7 @@ public class SQLInjectionServlet extends HttpServlet {
 
         //Search database below
         try {
-            ResultSet rs = searchQuery();
+            ResultSet rs = searchQuery(firstname,lastname);
 
             //If results are found
 
@@ -43,6 +40,9 @@ public class SQLInjectionServlet extends HttpServlet {
                 ResponseHandler.addParagraph("User Found: " + firstname + " " + lastname);
                 ResponseHandler.addParagraph("Role:" + rs.getString("role") + " Salary:" + rs.getString("salary"));
             }
+
+            //Closing the connection after results.
+            connection.close();
             RequestDispatcher dis = request.getRequestDispatcher("sqlPage.jsp");
             dis.include(request, response);
         }
@@ -54,12 +54,15 @@ public class SQLInjectionServlet extends HttpServlet {
         ResponseHandler.closeDocument();
     }
 
-    public ResultSet searchQuery(){
+    public ResultSet searchQuery(String firstname, String lastname){
         try{
-            String query = "SELECT * FROM staff WHERE firstname='"+ firstname + "' AND lastname='" + lastname + "'";
 
-            Statement statement = DatabaseConnection.connectDatabase().createStatement();
-            ResultSet rs = statement.executeQuery(query);
+            String query = "SELECT * FROM staff WHERE firstname=? AND lastname=?";
+
+            PreparedStatement statement = DatabaseConnection.connectDatabase().prepareStatement(query);
+            statement.setString(1,firstname);
+            statement.setString(2, lastname);
+            ResultSet rs = statement.executeQuery();
             return rs;
         }catch(SQLException e)
         {
