@@ -1,1 +1,1 @@
-web: java -jar target/SNAPSHOT-1.0.0.jar
+web: node index.jsp
