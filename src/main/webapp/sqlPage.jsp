@@ -25,7 +25,7 @@
   <p style="padding-left:2%">Use the code below to use SQL Injection</p>
   <p style="padding-left: 2%">Add the following to the end of the search bar <b>AFTER YOU SEARCH</b><br> '+OR+1=1-- </p>
   <p style="padding-left: 2%">This will make the search query inject like, SELECT * FROM staff WHERE firstname='firstname' AND lastname='lastname' OR 1=1--</p>
-  <p style="padding-left: 2%">Won't work here:</br>http://securewebapp-env.eba-inzyagdq.us-east-1.elasticbeanstalk.com/sqlInjectionServlet?username=Nathan&password=Andrews'%27'+OR+1=1</p>
+  <p style="padding-left: 2%">Won't work here:</br>http://securewebapp-env.eba-muitvv4z.us-east-1.elasticbeanstalk.com/sqlInjectionServlet?username=Nathan&password=Andrews'+OR+1=1--</p>
 </center>
 
 <p id="results"></p>
