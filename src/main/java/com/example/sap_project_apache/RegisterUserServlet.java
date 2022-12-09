@@ -45,6 +45,9 @@ public class RegisterUserServlet extends HttpServlet {
             ResponseHandler.addParagraph("Error adding user, please try again");
             response.setHeader("refresh","2;registerPage.jsp");
         }
+
+        //Adding connection closing to database as a more secure method
+        DatabaseConnection.closeConnection(connection);
     }
 
     private void grabValuesFromRequest(HttpServletRequest request)

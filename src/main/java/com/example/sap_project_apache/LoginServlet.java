@@ -4,6 +4,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -54,7 +55,8 @@ public class LoginServlet extends HttpServlet {
         {
             e.printStackTrace();
         }
-
+        //Adding connection closing to database as a more secure method
+        DatabaseConnection.closeConnection(connection);
         ResponseHandler.closeDocument();
     }
 

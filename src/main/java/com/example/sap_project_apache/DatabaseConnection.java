@@ -57,4 +57,20 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
     }
+
+
+    //Created a function to close the connection of the static and input connection
+    public static void closeConnection(Connection conect)
+    {
+        connection = conect;
+        try{
+            if(connection.isClosed() == false)
+            {
+                connection.close();
+            }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 }

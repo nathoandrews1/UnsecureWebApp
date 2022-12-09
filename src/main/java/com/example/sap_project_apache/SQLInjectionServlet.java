@@ -47,6 +47,9 @@ public class SQLInjectionServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+
+        //Adding connection closing to database as a more secure method
+        DatabaseConnection.closeConnection(connection);
         ResponseHandler.closeDocument();
     }
 
