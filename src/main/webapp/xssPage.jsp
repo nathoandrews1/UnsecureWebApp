@@ -40,10 +40,41 @@
 </div>
 
 <script>
-    function returnSearch(){
+    function returnSearch() {
         var firstName = document.getElementById("username").value;
         var lastName = document.getElementById("password").value;
-        document.getElementById("searchP").innerHTML = "Searching for user with Name: "+firstName + " " + lastName;
+
+        //Sanitize Input
+        if(sanitize(firstName) || sanitize(lastName))
+        {
+            alert("Illegal characters used, $,&,#,<,>,|,/");
+            return;
+        }
+        else
+        {
+            document.getElementById("searchP").innerHTML = "Searching for user with Name: "+firstName + " " + lastName;
+        }
+    }
+
+    function sanitize(input)
+    {
+        const illegalChars = ['$','&','#','<','>','|','/'];
+        var illegal = false;
+
+        //This is a loop that will check each character of the string passed into this function
+        //It will make sure that known illegal characters that can be used for injection are not
+        //passed or used in the system. This way we can return a true or false value and act
+        //accordingly anywhere in the program. IF False test failed alert user and redirect back
+        //IF true redirect successful
+        //This is a known defense against XSS injection and all form input details must be sanitized
+        for(let i = 0; i < input.toString().length - 1; i++)
+        {
+            if(illegalChars.includes(input.toString().charAt(i)))
+            {
+                illegal = true;
+            }
+        }
+        return illegal;
     }
 </script>
 </body>

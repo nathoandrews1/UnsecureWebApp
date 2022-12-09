@@ -6,10 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 @WebServlet(name="sqlInjectionServlet", value="/sqlInjectionServlet")
 public class SQLInjectionServlet extends HttpServlet {
@@ -32,7 +29,9 @@ public class SQLInjectionServlet extends HttpServlet {
 
         //Search database below
         try {
-            ResultSet rs = searchQuery();
+
+            //Here we provide the parameters required for the PreparedStatement instead of just executing the query without
+            ResultSet rs = searchQuery(firstname,lastname);
 
             //If results are found
 
@@ -51,12 +50,19 @@ public class SQLInjectionServlet extends HttpServlet {
         ResponseHandler.closeDocument();
     }
 
-    public ResultSet searchQuery(){
+    public ResultSet searchQuery(String firstname, String lastname){
         try{
-            String query = "SELECT * FROM staff WHERE firstname='"+ firstname + "' AND lastname='" + lastname + "'";
 
-            Statement statement = DatabaseConnection.connectDatabase().createStatement();
-            ResultSet rs = statement.executeQuery(query);
+            //Updated here to protect the select statement with a PreparedStatement instead.
+            //PreparedStatement will define the parameters and id them properly.
+            //In the background it makes sure that no extra or noless  parameters can be injected.
+            //This is one known mechanism to prevent SQL Injection
+            String query = "SELECT * FROM staff WHERE firstname=? AND lastname=?";
+
+            PreparedStatement statement = DatabaseConnection.connectDatabase().prepareStatement(query);
+            statement.setString(1,firstname);
+            statement.setString(2, lastname);
+            ResultSet rs = statement.executeQuery();
             return rs;
         }catch(SQLException e)
         {
